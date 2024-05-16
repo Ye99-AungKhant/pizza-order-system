@@ -39,7 +39,7 @@
        <br><br>
 
        <div class="">
-        <h5 class="text-danger">Total Price</h5>
+        <h5 class="text-danger" style="background-color:gray">Total Price</h5>
         <h3 class="text-success">{{ $pizza->price-$pizza->discount_price }} Kyats</h3> 
        </div>
 
