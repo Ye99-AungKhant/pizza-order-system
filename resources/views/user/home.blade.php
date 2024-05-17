@@ -7,7 +7,7 @@
         <div class="row gx-4 gx-lg-5 align-items-center my-5">
             <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" id="code-lab-pizza" src="https://www.pizzamarumyanmar.com/wp-content/uploads/2019/04/chigago.jpg" alt="..." /></div>
             <div class="col-lg-5">
-                <h1 class="font-weight-light" id="about">Pizza City Testing....</h1>
+                <h1 class="font-weight-light" id="about">Pizza City Testing....server testing</h1>
                 <p>Welcome from Pizza City. Have a great day! It doesn't have too much fancy flare to it, but it makes a great use of the standard Bootstrap core components. Feel free to use this template for any project you want!</p>
                 <a class="btn btn-primary" href="#!">Enjoy!</a>
             </div>
