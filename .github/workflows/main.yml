@@ -1,6 +1,39 @@
-- name: Test SSH Connection
-  env:
-    CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
-    CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
-  run: |
-    ssh -vvv -i ~/.ssh/id_rsa $CPANEL_USERNAME@$CPANEL_HOST "echo 'SSH connection successful'"
+name: Deploy to cPanel
+
+on:
+  push:
+    branches:
+      - main  # Change this to your deployment branch if different
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up SSH
+      env:
+        SSH_PRIVATE_KEY_BASE64: ${{ secrets.SSH_PRIVATE_KEY_BASE64 }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY_BASE64" | base64 --decode > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        echo -e "Host *\n\tIdentityFile ~/.ssh/id_rsa\n\tIdentitiesOnly yes\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+        ls -la ~/.ssh  # Debug: List SSH directory contents
+
+    - name: Test SSH Connection
+      env:
+        CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+        CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
+      run: |
+        ssh -vvv -i ~/.ssh/id_rsa $CPANEL_USERNAME@$CPANEL_HOST "echo 'SSH connection successful'"
+
+
+    - name: Copy files via rsync
+      env:
+        CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+        CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
+      run: |
+        rsync -avz -e "ssh -i ~/.ssh/id_rsa" ./ $CPANEL_USERNAME@$CPANEL_HOST:/path/to/your/cpanel/directory
