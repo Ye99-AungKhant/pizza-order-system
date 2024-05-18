@@ -12,7 +12,6 @@ jobs:
 
       - name: Use SSH Agent
         uses: delasoft/ssh-action@v2.2.0
-
         with:
           host: test.schoolpro.asia  # Replace with your CPanel domain name
           username: schoolprotest  # Replace with your CPanel username
@@ -20,6 +19,3 @@ jobs:
 
       - name: Deploy
         run: ssh schoolprotest@test.schoolpro.asia -p 22 "./deploy.sh"  # Replace with your CPanel details
-
-secrets:
-  DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
