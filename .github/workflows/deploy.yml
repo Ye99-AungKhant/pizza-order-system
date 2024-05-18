@@ -1,0 +1,24 @@
+name: Deploy to CPanel
+
+on:
+  push:
+    branches: [ main ]  # Trigger on pushes to the master branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use SSH Agent
+        uses: {% raw %}uses: delasoft/ssh-action@v2.2.0{% endraw %}
+        with:
+          host: test.schoolpro.asia  # Replace with your CPanel domain name
+          username: schoolprotest  # Replace with your CPanel username
+          key: ${{ secrets.DEPLOY_KEY }}
+
+      - name: Deploy
+        run: ssh schoolprotest@test.schoolpro.asia -p 22 "./deploy.sh"  # Replace with your CPanel details
+
+secrets:
+  DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
