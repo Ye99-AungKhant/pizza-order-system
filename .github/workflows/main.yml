@@ -20,16 +20,15 @@ jobs:
         mkdir -p ~/.ssh
         echo "$SSH_PRIVATE_KEY_BASE64" | base64 --decode > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+        echo -e "Host *\n\tIdentityFile ~/.ssh/id_rsa\n\tIdentitiesOnly yes\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
         ls -la ~/.ssh  # Debug: List SSH directory contents
-        cat ~/.ssh/id_rsa  # Debug: Output private key (ensure it's correct format)
 
     - name: Test SSH Connection
       env:
         CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
         CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
       run: |
-        ssh -i ~/.ssh/id_rsa $CPANEL_USERNAME@$CPANEL_HOST "echo 'SSH connection successful'"
+        ssh -v -i ~/.ssh/id_rsa $CPANEL_USERNAME@$CPANEL_HOST "echo 'SSH connection successful'"
 
     - name: Copy files via rsync
       env:
